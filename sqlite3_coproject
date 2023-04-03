@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coproject-db
+spec:
+  selector:
+    matchLabels:
+      app: coproject-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: coproject-db
+    spec:
+      containers:
+      - name: coproject-db
+        image: nouchka/sqlite3:latest
+        volumeMounts:
+        - name: sqlite3-volume
+          mountPath: /data
+      volumes:
+       - name: sqlite3-volume
+         hostPath:
+           path: ./db/:/root/db/
+           type: DirectoryOrCreate
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: coproject-db
+spec:
+  selector:
+    app: coproject-db
+  ports:
+  - protocol: TCP
+    port: 1433
+  type: ClusterIP

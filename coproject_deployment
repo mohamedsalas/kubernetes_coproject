@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pfe
+  labels:
+    app: coproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coproject
+  template:
+    metadata:
+      labels:
+        app: coproject
+    spec:
+      containers:
+        - name: coproject
+          image: 'mohamedsalas/coproject:latest'
+          ports:
+            - containerPort: 8000
